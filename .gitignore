@@ -43,3 +43,9 @@ docs/
 
 # translation temp files
 po/*~
+
+# OS generated files #
+*.DS_Store
+
+# here() markers
+*.here
