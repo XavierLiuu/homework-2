@@ -3,7 +3,7 @@
 ## Instructions
 
 1. Use data logging NBA player season statistics from the `/data` folder in this repo. Variable descriptions can be found [here](https://www.kaggle.com/drgilermo/nba-players-stats/data).
-2. Your final document should be an `.md` file (GitHub-flavored markdown) knitted from an R Markdown file. Create a folder called `/homework` where you will add the `.md` file, and a folder called `/src` where you will  place the script you used to create the reports.
+2. Your final document should be an `.md` file (GitHub-flavored markdown) knitted from an R Markdown file. Create a folder called `/homework` where you will add the `.md` file, and a folder called `/src` where you will  place the `.Rmd` file and any other scripts you used to create the reports.
 
   In answering each of the questions for the assignment please include
   - the question as a header in your R Markdown report,
@@ -47,7 +47,7 @@ Use `tidyverse` functions to answer the following questions:
 
 8. __Subset the original dataset to 1995.  Group the data by year and team name and then summarize the average number of points per team. Arrange from most to least points.__ `[10 pts]`
 
-9. __Reshape the data in the previous question into a wide format using `tidyr`.  Create a wide dataset that keeps year in a single column, but spreads team names to multiple individual columns with each column delineating points per team in 1995.__ `[10 pts]`
+9. __Reshape the data in the previous question into a wide format using the `tidyr` package.  Create a wide dataset that keeps year in a single column, but spreads team names to multiple individual columns with each column delineating points per team in 1995.__ `[10 pts]`
 
   _Hint: you should only have one year in the resulting data._
 
