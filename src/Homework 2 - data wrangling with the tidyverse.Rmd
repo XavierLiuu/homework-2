@@ -1,0 +1,108 @@
+---
+title: "Homework 2 - data wrangling with the tidyverse"
+author: "Runxiang Liu"
+date: "14/2/2023"
+output:
+  md_document:
+    toc: yes
+    variant: markdown_github
+  word_document:
+    toc: yes
+  pdf_document:
+    toc: yes
+  html_document:
+    toc: yes
+---
+
+# Homework 2 - data wrangling with the `tidyverse`
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Which NBA player scored the most points in 1991?
+
+```{r echo=FALSE}
+library(tidyverse)
+
+# Read in the data
+data <- read.csv("Seasons_Stats_NBA.csv")
+data %>% 
+  filter(Year == 1991) %>% 
+  arrange(desc(PTS)) %>% 
+  select(Player) %>% 
+  head(1)
+```
+
+## Which player had the best free throw percentage from the year 2000 to the most recent year in the data?
+
+```{r echo=FALSE}
+data %>% 
+  filter(Year >= 2000) %>% 
+  arrange(desc(FT.)) %>% 
+  select(Player) %>% 
+  head(1)
+```
+
+## Rename the variable `pos` to `position`.
+```{r}
+data %>% 
+  rename(Position = Pos) %>% head(5)
+```
+
+## Use this variable to create two variables that are called `first_position` and `second_position`. Hint: separate by splitting the position variable in two.
+
+```{r}
+data$first_position <- str_split(data$position, "-") %>% unlist %>% .[[1]]
+data$second_position <- str_split(data$position, "-") %>% unlist %>% .[[2]]
+```
+## Create two new datasets.
+### a new dataset from the original dataset that includes all data except the age variable (be sure to give this dataset a new name).
+
+```{r}
+data %>% 
+  select(-Age) -> data1
+head(data1, 5)
+```
+
+### a new dataset from the original dataset that includes the year, the player name, and age.
+```{r}
+data %>% 
+  select(Year, Player, Age) -> data2
+head(data2, 5)
+```
+
+## add a new column to both datasets called mergeid that includes a sequence of numbers beginning with a 1 in the first row of the data and ending with the total number of rows in the last row of the data
+```{r}
+data1$mergeid <- seq(1,nrow(data1),1)
+
+data2$mergeid <- seq(1,nrow(data2),1)
+```
+
+## Join the two datasets from question (6) together to recreate the original dataset plus the new merge id.
+```{r}
+new_data <- merge(data1, data2, by = "mergeid")
+head(new_data, 5)
+```
+
+## Subset the original dataset to 1995. Group the data by year and team name and then summarize the average number of points per team. Arrange from most to least points.
+```{r}
+data %>% filter(Year==1995) %>% group_by(Year, Tm) %>% summarize(avg_pts = mean(PTS)) %>% arrange(desc(avg_pts)) -> data3
+head(data3, 5)
+```
+
+## Reshape the data in the previous question into a wide format using the tidyr package. Create a wide dataset that keeps year in a single column, but spreads team names to multiple individual columns with each column delineating points per team in 1995.
+
+```{r}
+data3 %>% spread(Tm, avg_pts) -> data4
+head(data4, 5)
+```
+
+## Now return the data to a long (tidy) format by moving teams back into a single column and points in a single column.
+
+```{r}
+data4 %>% gather(Tm, avg_pts, -Year) -> data5
+head(data5, 5)
+```
+
+
